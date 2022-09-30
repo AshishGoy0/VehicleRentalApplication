@@ -9,6 +9,7 @@ import com.vehicle.rental.repository.BookingsRepository;
 import com.vehicle.rental.repository.BranchRepository;
 import com.vehicle.rental.service.BookingService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,7 +23,6 @@ public class BookingServiceImpl implements BookingService {
         if (Objects.isNull(bookRequest) || bookRequest.getStartSlot() > bookRequest.getEndSlot()) {
             throw new CustomException(ErrorCode.BAD_REQUEST, "Invalid Request");
         }
-
 
         BranchRepository branchRepository = BranchRepository.getInstance();
         Branch branch = branchRepository.getBranch(bookRequest.getBranchName());
@@ -53,7 +53,7 @@ public class BookingServiceImpl implements BookingService {
                 this.bookSlots(startSlot, endSlot, vehicleAvailability);
 
                 //Return price
-                return vehicle.getPrice();
+                return vehicle.getPrice() * (endSlot - startSlot);
             }
         }
 
@@ -62,7 +62,7 @@ public class BookingServiceImpl implements BookingService {
 
     private void bookSlots(Integer startSlot, Integer endSlot,
                            List<Boolean> vehicleAvailability) {
-        for (int i = startSlot; i <= endSlot; i++) {
+        for (int i = startSlot; i < endSlot; i++) {
             vehicleAvailability.set(i, false);
         }
     }
@@ -70,7 +70,7 @@ public class BookingServiceImpl implements BookingService {
     private boolean isAvailable(Integer startSlot, Integer endSlot,
                                 List<Boolean> vehicleAvailability) {
         boolean available = true;
-        for (int i = startSlot; i <= endSlot; i++) {
+        for (int i = startSlot; i < endSlot; i++) {
             if (!vehicleAvailability.get(i)) {
                 return false;
             }
@@ -84,6 +84,7 @@ public class BookingServiceImpl implements BookingService {
         List<Vehicle> vehiclesOfBranch = branchRepository.getAllVehiclesOfBranch(branch);
         return vehiclesOfBranch.stream()
                 .filter(x -> x.getVehicleType().equals(bookRequest.getVehicleType()))
+                .sorted(Comparator.comparing(Vehicle::getPrice))
                 .collect(Collectors.toList());
     }
 }

@@ -59,7 +59,7 @@ public class BookingServiceTest extends BaseTest {
                 "B1", VehicleType.BIKE, 3, 6
         );
         Double price = bookingService.bookVehicle(bookRequest);
-        assertEquals(10.0, price, 0.0);
+        assertEquals(30.0, price, 0.0);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class BookingServiceTest extends BaseTest {
                 "B1", VehicleType.BIKE, 3, 6
         );
         Double price = bookingService.bookVehicle(bookRequest);
-        assertEquals(10.0, price, 0.0);
+        assertEquals(30.0, price, 0.0);
 
         //Booking Vehicle for same slot
         bookRequest = new BookRequest(
@@ -144,7 +144,7 @@ public class BookingServiceTest extends BaseTest {
                 "B1", VehicleType.BIKE, 3, 6
         );
         Double price = bookingService.bookVehicle(bookRequest);
-        assertEquals(10.0, price, 0.0);
+        assertEquals(30.0, price, 0.0);
 
         //Booking Vehicle for different slot
         bookRequest = new BookRequest(

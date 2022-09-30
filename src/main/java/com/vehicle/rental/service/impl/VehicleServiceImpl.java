@@ -1,14 +1,14 @@
 package com.vehicle.rental.service.impl;
 
-import com.vehicle.rental.exceptions.CustomException;
-import com.vehicle.rental.exceptions.ErrorCode;
-import com.vehicle.rental.service.VehicleService;
 import com.vehicle.rental.apimodels.request.AddVehicleRequest;
 import com.vehicle.rental.apimodels.request.GetVehicleRequest;
 import com.vehicle.rental.entities.Branch;
 import com.vehicle.rental.entities.Vehicle;
+import com.vehicle.rental.exceptions.CustomException;
+import com.vehicle.rental.exceptions.ErrorCode;
 import com.vehicle.rental.repository.BookingsRepository;
 import com.vehicle.rental.repository.BranchRepository;
+import com.vehicle.rental.service.VehicleService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,18 +26,20 @@ public class VehicleServiceImpl implements VehicleService {
             throw new CustomException(ErrorCode.BAD_REQUEST, "Invalid Request");
         }
 
+        BranchRepository branchRepository = BranchRepository.getInstance();
+        Branch branch = branchRepository.getBranch(addVehicleRequest.getBranchName());
+        if (Objects.isNull(branch)) {
+            return "FALSE";
+        }
+        if (!branch.getVehicleTypes().contains(addVehicleRequest.getVehicleType())) {
+            return "FALSE";
+        }
+
         Vehicle vehicle = new Vehicle(
                 addVehicleRequest.getVehicleId(),
                 addVehicleRequest.getVehicleType(),
                 addVehicleRequest.getVehiclePrice()
         );
-
-        BranchRepository branchRepository = BranchRepository.getInstance();
-        Branch branch = branchRepository.getBranch(addVehicleRequest.getBranchName());
-        if (Objects.isNull(branch)){
-            throw new CustomException(ErrorCode.BAD_REQUEST, "Branch Does not exist, First Create the Branch");
-        }
-
         branchRepository.addVehicleToBranch(branch, vehicle);
 
         //Add Vehicle for booking

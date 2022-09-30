@@ -1,12 +1,12 @@
 package com.vehicle.rental.service.impl;
 
-import com.vehicle.rental.exceptions.CustomException;
-import com.vehicle.rental.exceptions.ErrorCode;
-import com.vehicle.rental.service.BranchService;
 import com.vehicle.rental.apimodels.request.AddBranchRequest;
 import com.vehicle.rental.entities.Branch;
+import com.vehicle.rental.exceptions.CustomException;
+import com.vehicle.rental.exceptions.ErrorCode;
 import com.vehicle.rental.repository.BranchRepository;
 import com.vehicle.rental.repository.CityRepository;
+import com.vehicle.rental.service.BranchService;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,8 +25,8 @@ public class BranchServiceImpl implements BranchService {
                 addBranchRequest.getVehicleTypes()
         );
         CityRepository.getInstance().addBranch(
-                addBranchRequest.getCityName()
-                , branch
+                addBranchRequest.getCityName(),
+                branch
         );
         return "TRUE";
     }
