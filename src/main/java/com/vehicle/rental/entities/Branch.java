@@ -15,6 +15,14 @@ public class Branch {
         this.vehicleTypes = vehicleTypes;
     }
 
+    @Override
+    public String toString() {
+        return "Branch{" +
+                "name='" + name + '\'' +
+                ", vehicleTypes=" + vehicleTypes +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

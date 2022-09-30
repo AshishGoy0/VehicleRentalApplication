@@ -12,6 +12,12 @@ public class AddBranchRequest {
 
     List<VehicleType> vehicleTypes;
 
+    public AddBranchRequest(String cityName, String branchName, List<VehicleType> vehicleTypes) {
+        this.cityName = cityName;
+        this.branchName = branchName;
+        this.vehicleTypes = vehicleTypes;
+    }
+
     public String getCityName() {
         return cityName;
     }

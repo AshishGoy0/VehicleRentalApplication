@@ -16,6 +16,15 @@ public class Vehicle {
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id='" + id + '\'' +
+                ", vehicleType=" + vehicleType +
+                ", price=" + price +
+                '}';
+    }
+
     public String getId() {
         return id;
     }
