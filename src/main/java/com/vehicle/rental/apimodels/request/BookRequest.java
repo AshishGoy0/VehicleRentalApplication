@@ -1,7 +1,7 @@
 
-package main.java.com.vehicle.rental.apimodels.request;
+package com.vehicle.rental.apimodels.request;
 
-import main.java.com.vehicle.rental.enums.VehicleType;
+import com.vehicle.rental.enums.VehicleType;
 
 public class BookRequest {
 
@@ -12,6 +12,13 @@ public class BookRequest {
     Integer startSlot;
 
     Integer endSlot;
+
+    public BookRequest(String branchName, VehicleType vehicleType, Integer startSlot, Integer endSlot) {
+        this.branchName = branchName;
+        this.vehicleType = vehicleType;
+        this.startSlot = startSlot;
+        this.endSlot = endSlot;
+    }
 
     public String getBranchName() {
         return branchName;

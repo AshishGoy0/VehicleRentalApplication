@@ -1,14 +1,14 @@
-package main.java.com.vehicle.rental.service.impl;
+package com.vehicle.rental.service.impl;
 
-import main.java.com.vehicle.rental.apimodels.request.AddVehicleRequest;
-import main.java.com.vehicle.rental.apimodels.request.GetVehicleRequest;
-import main.java.com.vehicle.rental.entities.Branch;
-import main.java.com.vehicle.rental.entities.Vehicle;
-import main.java.com.vehicle.rental.exceptions.CustomException;
-import main.java.com.vehicle.rental.exceptions.ErrorCode;
-import main.java.com.vehicle.rental.repository.BookingsRepository;
-import main.java.com.vehicle.rental.repository.BranchRepository;
-import main.java.com.vehicle.rental.service.VehicleService;
+import com.vehicle.rental.exceptions.CustomException;
+import com.vehicle.rental.exceptions.ErrorCode;
+import com.vehicle.rental.service.VehicleService;
+import com.vehicle.rental.apimodels.request.AddVehicleRequest;
+import com.vehicle.rental.apimodels.request.GetVehicleRequest;
+import com.vehicle.rental.entities.Branch;
+import com.vehicle.rental.entities.Vehicle;
+import com.vehicle.rental.repository.BookingsRepository;
+import com.vehicle.rental.repository.BranchRepository;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 public class VehicleServiceImpl implements VehicleService {
 
+    @Override
     public String addVehicle(AddVehicleRequest addVehicleRequest) {
 
         //Validation
@@ -32,21 +33,21 @@ public class VehicleServiceImpl implements VehicleService {
         );
 
         BranchRepository branchRepository = BranchRepository.getInstance();
-        branchRepository.addVehicleToBranch(
-                branchRepository.getBranch(addVehicleRequest.getBranchName()),
-                vehicle
-        );
+        Branch branch = branchRepository.getBranch(addVehicleRequest.getBranchName());
+        if (Objects.isNull(branch)){
+            throw new CustomException(ErrorCode.BAD_REQUEST, "Branch Does not exist, First Create the Branch");
+        }
+
+        branchRepository.addVehicleToBranch(branch, vehicle);
 
         //Add Vehicle for booking
         BookingsRepository.getInstance().addVehicle(vehicle);
         return "TRUE";
     }
 
+    @Override
     public List<String> getVehicles(GetVehicleRequest getVehicleRequest) {
-        BranchRepository branchRepository = BranchRepository.getInstance();
-        Branch branch = branchRepository.getBranch(getVehicleRequest.getBranchName());
-
-        List<Vehicle> allVehiclesOfBranch = branchRepository.getAllVehiclesOfBranch(branch);
+        List<Vehicle> allVehiclesOfBranch = this.getAllVehiclesOfBranch(getVehicleRequest.getBranchName());
 
         Integer startSlot = getVehicleRequest.getStartSlot();
         Integer endSlot = getVehicleRequest.getEndSlot();
@@ -72,6 +73,14 @@ public class VehicleServiceImpl implements VehicleService {
         return availableVehicle.stream()
                 .map(Vehicle::getId)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Vehicle> getAllVehiclesOfBranch(String branchName) {
+        BranchRepository branchRepository = BranchRepository.getInstance();
+        Branch branch = branchRepository.getBranch(branchName);
+
+        return branchRepository.getAllVehiclesOfBranch(branch);
     }
 
 }

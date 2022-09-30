@@ -1,6 +1,6 @@
-package main.java.com.vehicle.rental.apimodels.request;
+package com.vehicle.rental.apimodels.request;
 
-import main.java.com.vehicle.rental.enums.VehicleType;
+import com.vehicle.rental.enums.VehicleType;
 
 public class AddVehicleRequest {
 
@@ -11,6 +11,13 @@ public class AddVehicleRequest {
     String vehicleId;
 
     Double vehiclePrice;
+
+    public AddVehicleRequest(String branchName, VehicleType vehicleType, String vehicleId, Double vehiclePrice) {
+        this.branchName = branchName;
+        this.vehicleType = vehicleType;
+        this.vehicleId = vehicleId;
+        this.vehiclePrice = vehiclePrice;
+    }
 
     public String getBranchName() {
         return branchName;

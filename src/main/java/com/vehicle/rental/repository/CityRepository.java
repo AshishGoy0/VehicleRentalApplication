@@ -1,6 +1,6 @@
-package main.java.com.vehicle.rental.repository;
+package com.vehicle.rental.repository;
 
-import main.java.com.vehicle.rental.entities.Branch;
+import com.vehicle.rental.entities.Branch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CityRepository {
 
-    private static Map<String, List<Branch>> branchMap;
+    public Map<String, List<Branch>> branchMap;
 
     private static CityRepository instance;
 

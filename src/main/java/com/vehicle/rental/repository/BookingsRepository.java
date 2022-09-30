@@ -1,6 +1,6 @@
-package main.java.com.vehicle.rental.repository;
+package com.vehicle.rental.repository;
 
-import main.java.com.vehicle.rental.entities.Vehicle;
+import com.vehicle.rental.entities.Vehicle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class BookingsRepository {
 
-    private Map<Vehicle, List<Boolean>> vehicleAvailabilityMap;
+    public Map<Vehicle, List<Boolean>> vehicleAvailabilityMap;
 
     public static BookingsRepository instance;
 

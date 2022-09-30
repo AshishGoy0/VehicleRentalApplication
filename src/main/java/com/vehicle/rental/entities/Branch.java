@@ -1,6 +1,6 @@
-package main.java.com.vehicle.rental.entities;
+package com.vehicle.rental.entities;
 
-import main.java.com.vehicle.rental.enums.VehicleType;
+import com.vehicle.rental.enums.VehicleType;
 
 import java.util.List;
 

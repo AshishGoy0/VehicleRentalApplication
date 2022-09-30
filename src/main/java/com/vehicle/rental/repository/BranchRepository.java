@@ -1,16 +1,16 @@
-package main.java.com.vehicle.rental.repository;
+package com.vehicle.rental.repository;
 
-import main.java.com.vehicle.rental.entities.Branch;
-import main.java.com.vehicle.rental.entities.Vehicle;
-import main.java.com.vehicle.rental.enums.VehicleType;
+import com.vehicle.rental.entities.Branch;
+import com.vehicle.rental.entities.Vehicle;
+import com.vehicle.rental.enums.VehicleType;
 
 import java.util.*;
 
 public class BranchRepository {
 
-    private Map<Branch, List<Vehicle>> branchVehicleMap;
+    public Map<Branch, List<Vehicle>> branchVehicleMap;
 
-    private Map<String, Branch> branchMap;
+    public Map<String, Branch> branchMap;
 
     private static BranchRepository instance;
 

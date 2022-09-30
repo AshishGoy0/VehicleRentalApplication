@@ -1,7 +1,7 @@
-package main.java.com.vehicle.rental.service;
+package com.vehicle.rental.service;
 
-import main.java.com.vehicle.rental.apimodels.request.AddBranchRequest;
-import main.java.com.vehicle.rental.entities.Branch;
+import com.vehicle.rental.apimodels.request.AddBranchRequest;
+import com.vehicle.rental.entities.Branch;
 
 import java.util.List;
 

@@ -1,12 +1,12 @@
-package main.java.com.vehicle.rental.service.impl;
+package com.vehicle.rental.service.impl;
 
-import main.java.com.vehicle.rental.apimodels.request.AddBranchRequest;
-import main.java.com.vehicle.rental.entities.Branch;
-import main.java.com.vehicle.rental.exceptions.CustomException;
-import main.java.com.vehicle.rental.exceptions.ErrorCode;
-import main.java.com.vehicle.rental.repository.BranchRepository;
-import main.java.com.vehicle.rental.repository.CityRepository;
-import main.java.com.vehicle.rental.service.BranchService;
+import com.vehicle.rental.exceptions.CustomException;
+import com.vehicle.rental.exceptions.ErrorCode;
+import com.vehicle.rental.service.BranchService;
+import com.vehicle.rental.apimodels.request.AddBranchRequest;
+import com.vehicle.rental.entities.Branch;
+import com.vehicle.rental.repository.BranchRepository;
+import com.vehicle.rental.repository.CityRepository;
 
 import java.util.List;
 import java.util.Objects;

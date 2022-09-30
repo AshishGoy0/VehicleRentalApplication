@@ -1,4 +1,4 @@
-package main.java.com.vehicle.rental.exceptions;
+package com.vehicle.rental.exceptions;
 
 public enum ErrorCode {
 

@@ -1,6 +1,4 @@
-package main.java.com.vehicle.rental.apimodels.request;
-
-import main.java.com.vehicle.rental.enums.VehicleType;
+package com.vehicle.rental.apimodels.request;
 
 public class GetVehicleRequest {
 
@@ -10,6 +8,11 @@ public class GetVehicleRequest {
 
     Integer endSlot;
 
+    public GetVehicleRequest(String branchName, Integer startSlot, Integer endSlot) {
+        this.branchName = branchName;
+        this.startSlot = startSlot;
+        this.endSlot = endSlot;
+    }
 
     public String getBranchName() {
         return branchName;

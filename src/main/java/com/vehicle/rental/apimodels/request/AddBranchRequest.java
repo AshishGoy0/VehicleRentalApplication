@@ -1,6 +1,6 @@
-package main.java.com.vehicle.rental.apimodels.request;
+package com.vehicle.rental.apimodels.request;
 
-import main.java.com.vehicle.rental.enums.VehicleType;
+import com.vehicle.rental.enums.VehicleType;
 
 import java.util.List;
 
