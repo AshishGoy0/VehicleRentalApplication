@@ -22,12 +22,12 @@ public class VehicleRentalApplication {
     public static void main(String[] args) {
 
         try {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Please Enter the File path \nSample - 'src/main/resources/TestData.txt'");
-            String path = sc.nextLine();
+            //Scanner sc = new Scanner(System.in);
+            //System.out.println("Please Enter the File path \nSample - 'src/main/resources/TestData.txt'");
+            //String path = sc.nextLine();
 
-            FileInputStream fis = new FileInputStream(path);
-            sc = new Scanner(fis);
+            FileInputStream fis = new FileInputStream("src/main/resources/TestData.txt");
+            Scanner sc = new Scanner(fis);
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 String[] stringArray = line.split(" ");
