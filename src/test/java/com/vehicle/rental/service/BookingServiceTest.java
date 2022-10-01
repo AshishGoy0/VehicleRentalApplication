@@ -219,7 +219,7 @@ public class BookingServiceTest extends BaseTest {
 
         //Adding Vehicle
         addVehicleRequest = new AddVehicleRequest(
-                "B1", VehicleType.CAR, "3", 100D
+                "B1", VehicleType.CAR, "C3", 100D
         );
         vehicleService.addVehicle(addVehicleRequest);
 
