@@ -17,3 +17,6 @@ Dynamic pricing – demand vs supply. If 80% of cars in a particular branch are 
 # Sample files for better understanding
 src/main/resources/TestData.txt<br />
 src/main/resources/DynamicCost.txt<br />
+
+# Build
+./gradlew clean build<br />
