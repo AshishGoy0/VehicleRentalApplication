@@ -65,7 +65,12 @@ public class VehicleRentalApplication {
                 branchName, startSlot, endSlot
         );
         List<String> vehicles = vehicleService.getVehicles(getVehicleRequest);
-        System.out.println(vehicles);
+        System.out.println(
+                vehicles.toString()
+                        .replace("[", "")
+                        .replace("]", "")
+                        .trim()
+        );
     }
 
     private static void book(String[] stringArray) {
@@ -80,7 +85,7 @@ public class VehicleRentalApplication {
                 branchName, vehicleType, startSlot, endSlot
         );
         Double price = bookingService.bookVehicle(bookRequest);
-        System.out.println(price);
+        System.out.println(price.intValue());
     }
 
     private static void addVehicle(String[] stringArray) {
