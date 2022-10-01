@@ -35,6 +35,11 @@ public class VehicleServiceImpl implements VehicleService {
             return "FALSE";
         }
 
+        List<Vehicle> allVehiclesOfBranch = branchRepository.getAllVehiclesOfBranch(branch);
+        if (allVehiclesOfBranch.stream().anyMatch(x -> x.getId().equals(addVehicleRequest.getVehicleId()))) {
+            return "FALSE";
+        }
+
         Vehicle vehicle = new Vehicle(
                 addVehicleRequest.getVehicleId(),
                 addVehicleRequest.getVehicleType(),

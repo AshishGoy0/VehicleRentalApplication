@@ -3,61 +3,112 @@ package com.vehicle.rental.service.impl;
 import com.vehicle.rental.apimodels.request.BookRequest;
 import com.vehicle.rental.entities.Branch;
 import com.vehicle.rental.entities.Vehicle;
-import com.vehicle.rental.exceptions.CustomException;
-import com.vehicle.rental.exceptions.ErrorCode;
 import com.vehicle.rental.repository.BookingsRepository;
 import com.vehicle.rental.repository.BranchRepository;
 import com.vehicle.rental.service.BookingService;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class BookingServiceImpl implements BookingService {
 
     @Override
     public Double bookVehicle(BookRequest bookRequest) {
 
-        //Validation
-        if (Objects.isNull(bookRequest) || bookRequest.getStartSlot() > bookRequest.getEndSlot()) {
-            throw new CustomException(ErrorCode.BAD_REQUEST, "Invalid Request");
+        //Validation and Get Vehicles of Branch
+        List<Vehicle> vehiclesOfBranch = this.validateAndGetVehiclesOfBranch(bookRequest);
+
+        if (Objects.isNull(vehiclesOfBranch)) {
+            return -1D;
+        }
+
+        return this.bookVehicleLogic(bookRequest, vehiclesOfBranch);
+    }
+
+    private List<Vehicle> validateAndGetVehiclesOfBranch(BookRequest bookRequest) {
+        if (Objects.isNull(bookRequest) ||
+                bookRequest.getStartSlot() > bookRequest.getEndSlot() ||
+                bookRequest.getEndSlot() > 24 ||
+                bookRequest.getStartSlot() > 24) {
+            return null;
         }
 
         BranchRepository branchRepository = BranchRepository.getInstance();
         Branch branch = branchRepository.getBranch(bookRequest.getBranchName());
         if (Objects.isNull(branch)) {
-            throw new CustomException(ErrorCode.BAD_REQUEST, "Branch Does not exist, First Create the Branch");
+            return null;
         }
         //Validation over Vehicle Type
         if (!branch.getVehicleTypes().contains(bookRequest.getVehicleType())) {
-            return -1D;
+            return null;
         }
 
-        List<Vehicle> requiredVehicles = this.getRequiredVehicles(bookRequest, branchRepository, branch);
-        if (requiredVehicles.isEmpty()) {
-            return -1D;
+        List<Vehicle> vehiclesOfBranch = branchRepository.getAllVehiclesOfBranch(branch);
+        if (vehiclesOfBranch.isEmpty()) {
+            return null;
         }
+        return vehiclesOfBranch;
+    }
 
+    private double bookVehicleLogic(BookRequest bookRequest, List<Vehicle> vehiclesOfBranch) {
         Integer startSlot = bookRequest.getStartSlot();
         Integer endSlot = bookRequest.getEndSlot();
 
         BookingsRepository bookingsRepository = BookingsRepository.getInstance();
 
-        for (Vehicle vehicle : requiredVehicles) {
+        Vehicle desiredVehicle = null;
+        List<Boolean> desiredVehicleAvailability = null;
+        double bookedVehicles = 0;
+
+        for (Vehicle vehicle : vehiclesOfBranch) {
 
             List<Boolean> vehicleAvailability = bookingsRepository.getVehicleAvailability(vehicle);
+            boolean availableForGivenSlots = this.isAvailable(startSlot, endSlot, vehicleAvailability);
 
-            if (this.isAvailable(startSlot, endSlot, vehicleAvailability)) {
-                //Book Slots
-                this.bookSlots(startSlot, endSlot, vehicleAvailability);
+            if (!availableForGivenSlots) {
+                bookedVehicles++;
+            }
 
-                //Return price
-                return vehicle.getPrice() * (endSlot - startSlot);
+            if (Objects.isNull(desiredVehicle) &&
+                    vehicle.getVehicleType().equals(bookRequest.getVehicleType()) &&
+                    availableForGivenSlots) {
+                desiredVehicle = vehicle;
+                desiredVehicleAvailability = vehicleAvailability;
             }
         }
 
-        return -1D;
+        if (Objects.isNull(desiredVehicle)) {
+            return -1D;
+        }
+
+        //Book Slots for Vehicle
+        this.bookSlots(
+                startSlot, endSlot, desiredVehicleAvailability
+        );
+
+        //Return price for Vehicle with Dynamic pricing
+        return this.fetchCost(
+                startSlot, endSlot, desiredVehicle,
+                bookedVehicles, vehiclesOfBranch.size()
+        );
+    }
+
+    /**
+     * Dynamic Pricing Based on No. of Vehicles Booked in a particular branch
+     */
+    private double fetchCost(Integer startSlot, Integer endSlot,
+                             Vehicle desiredVehicle,
+                             double bookedVehicles,
+                             double totalVehicles) {
+
+        double basePrice = desiredVehicle.getPrice() * (endSlot - startSlot);
+
+        double percentageBooked = (bookedVehicles / totalVehicles) * 100;
+
+        if (Double.compare(percentageBooked, 80) >= 0) {
+            return basePrice + 0.1 * basePrice;
+        }
+        return basePrice;
     }
 
     private void bookSlots(Integer startSlot, Integer endSlot,
@@ -76,15 +127,5 @@ public class BookingServiceImpl implements BookingService {
             }
         }
         return available;
-    }
-
-    private List<Vehicle> getRequiredVehicles(BookRequest bookRequest,
-                                              BranchRepository branchRepository,
-                                              Branch branch) {
-        List<Vehicle> vehiclesOfBranch = branchRepository.getAllVehiclesOfBranch(branch);
-        return vehiclesOfBranch.stream()
-                .filter(x -> x.getVehicleType().equals(bookRequest.getVehicleType()))
-                .sorted(Comparator.comparing(Vehicle::getPrice))
-                .collect(Collectors.toList());
     }
 }
