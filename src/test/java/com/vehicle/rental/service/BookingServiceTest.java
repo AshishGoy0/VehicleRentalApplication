@@ -181,4 +181,84 @@ public class BookingServiceTest extends BaseTest {
 
     }
 
+    @Test
+    public void dynamicCostingTest() {
+        BranchService branchService = new BranchServiceImpl();
+        VehicleService vehicleService = new VehicleServiceImpl();
+        BookingService bookingService = new BookingServiceImpl();
+
+        //Adding branch
+        AddBranchRequest addBranchRequest = new AddBranchRequest(
+                "ABC", "B1", Arrays.asList(VehicleType.CAR, VehicleType.BIKE)
+        );
+        branchService.addBranch(addBranchRequest);
+
+        //Adding Vehicle
+        AddVehicleRequest addVehicleRequest = new AddVehicleRequest(
+                "B1", VehicleType.BIKE, "B1", 10D
+        );
+        vehicleService.addVehicle(addVehicleRequest);
+
+        //Adding Vehicle
+        addVehicleRequest = new AddVehicleRequest(
+                "B1", VehicleType.BIKE, "B2", 10D
+        );
+        vehicleService.addVehicle(addVehicleRequest);
+
+        //Adding Vehicle
+        addVehicleRequest = new AddVehicleRequest(
+                "B1", VehicleType.CAR, "C1", 100D
+        );
+        vehicleService.addVehicle(addVehicleRequest);
+
+        //Adding Vehicle
+        addVehicleRequest = new AddVehicleRequest(
+                "B1", VehicleType.CAR, "C2", 100D
+        );
+        vehicleService.addVehicle(addVehicleRequest);
+
+        //Adding Vehicle
+        addVehicleRequest = new AddVehicleRequest(
+                "B1", VehicleType.CAR, "3", 100D
+        );
+        vehicleService.addVehicle(addVehicleRequest);
+
+        //Booking Vehicle
+        BookRequest bookRequest = new BookRequest(
+                "B1", VehicleType.BIKE, 3, 6
+        );
+        Double price = bookingService.bookVehicle(bookRequest);
+        assertEquals(30.0, price, 0.0);
+
+
+        //Booking Vehicle
+        bookRequest = new BookRequest(
+                "B1", VehicleType.BIKE, 3, 6
+        );
+        price = bookingService.bookVehicle(bookRequest);
+        assertEquals(30.0, price, 0.0);
+
+        //Booking Vehicle
+        bookRequest = new BookRequest(
+                "B1", VehicleType.CAR, 3, 6
+        );
+        price = bookingService.bookVehicle(bookRequest);
+        assertEquals(300.0, price, 0.0);
+
+        //Booking Vehicle
+        bookRequest = new BookRequest(
+                "B1", VehicleType.CAR, 3, 6
+        );
+        price = bookingService.bookVehicle(bookRequest);
+        assertEquals(300.0, price, 0.0);
+
+        //Booking Vehicle
+        bookRequest = new BookRequest(
+                "B1", VehicleType.CAR, 3, 6
+        );
+        price = bookingService.bookVehicle(bookRequest);
+        assertEquals(330.0, price, 0.0);
+
+    }
+
 }
