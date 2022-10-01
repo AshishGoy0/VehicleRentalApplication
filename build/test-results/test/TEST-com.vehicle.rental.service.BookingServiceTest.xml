@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.vehicle.rental.service.BookingServiceTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2022-10-01T08:47:10" hostname="admins-MacBook-Pro.local" time="0.019">
+  <properties/>
+  <testcase name="bookVehicleForDifferentVehicleType()" classname="com.vehicle.rental.service.BookingServiceTest" time="0.002"/>
+  <testcase name="bookVehicleWithDifferentSlot()" classname="com.vehicle.rental.service.BookingServiceTest" time="0.001"/>
+  <testcase name="bookVehicleWithAddingDifferentVehicle()" classname="com.vehicle.rental.service.BookingServiceTest" time="0.001"/>
+  <testcase name="dynamicCostingTest()" classname="com.vehicle.rental.service.BookingServiceTest" time="0.001"/>
+  <testcase name="bookVehicleWithAddingVehicle()" classname="com.vehicle.rental.service.BookingServiceTest" time="0.001"/>
+  <testcase name="bookVehicleWithSameSlot()" classname="com.vehicle.rental.service.BookingServiceTest" time="0.003"/>
+  <testcase name="bookVehicleWithoutAddingVehicle()" classname="com.vehicle.rental.service.BookingServiceTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
