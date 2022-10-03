@@ -69,6 +69,7 @@ public class VehicleRentalApplication {
                 vehicles.toString()
                         .replace("[", "")
                         .replace("]", "")
+                        .replace(" ", "")
                         .trim()
         );
     }
