@@ -1,28 +1,12 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 group 'com.vehicle.rental'
 version '1.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-test {
-    useJUnitPlatform()
-}
-
-dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
-    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.3.3'
-}
 
 jar {
     archiveBaseName = 'geektrust' //Please do not change this final artifact name
@@ -41,3 +25,41 @@ jar {
     }
 }
 
+test { ///Please do not change this
+    useJUnitPlatform()
+    testLogging {
+        events "PASSED", "SKIPPED", "FAILED", "STANDARD_ERROR"
+    }
+    finalizedBy jacocoTestReport // report is always generated after tests run
+    afterSuite { desc, result ->
+        if (!desc.parent)
+            println("${result.resultType} " +
+                    "(${result.testCount} tests, " +
+                    "${result.successfulTestCount} successes, " +
+                    "${result.failedTestCount} failures, " +
+                    "${result.skippedTestCount} skipped)")
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+jacoco { //Please do not change this
+    toolVersion = "0.8.4"
+    reportsDir = file("$buildDir/jacoco")
+}
+
+jacocoTestReport { //Please do not change this
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled false
+        xml.destination file("./jacoco.xml")
+    }
+}

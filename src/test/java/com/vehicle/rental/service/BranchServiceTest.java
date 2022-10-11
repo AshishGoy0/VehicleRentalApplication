@@ -4,9 +4,7 @@ import com.vehicle.rental.BaseTest;
 import com.vehicle.rental.apimodels.request.AddBranchRequest;
 import com.vehicle.rental.entities.Branch;
 import com.vehicle.rental.enums.VehicleType;
-import com.vehicle.rental.service.impl.BookingServiceImpl;
 import com.vehicle.rental.service.impl.BranchServiceImpl;
-import com.vehicle.rental.service.impl.VehicleServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -20,8 +18,6 @@ public class BranchServiceTest extends BaseTest {
     public void addAndGetBranchTest() {
 
         BranchService branchService = new BranchServiceImpl();
-        VehicleService vehicleService = new VehicleServiceImpl();
-        BookingService bookingService = new BookingServiceImpl();
 
         AddBranchRequest addBranchRequest = new AddBranchRequest(
                 "ABC", "B1", Arrays.asList(VehicleType.CAR, VehicleType.VAN)
