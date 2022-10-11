@@ -9,6 +9,7 @@ import com.vehicle.rental.service.BookingService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class BookingServiceImpl implements BookingService {
 
@@ -43,7 +44,11 @@ public class BookingServiceImpl implements BookingService {
             return null;
         }
 
-        List<Vehicle> vehiclesOfBranch = branchRepository.getAllVehiclesOfBranch(branch);
+        List<Vehicle> vehiclesOfBranch = branchRepository.getAllVehiclesOfBranch(branch)
+                .stream()
+                .filter(x -> x.getVehicleType().equals(bookRequest.getVehicleType()))
+                .collect(Collectors.toList());
+
         if (vehiclesOfBranch.isEmpty()) {
             return null;
         }
@@ -70,7 +75,6 @@ public class BookingServiceImpl implements BookingService {
             }
 
             if (Objects.isNull(desiredVehicle) &&
-                    vehicle.getVehicleType().equals(bookRequest.getVehicleType()) &&
                     availableForGivenSlots) {
                 desiredVehicle = vehicle;
                 desiredVehicleAvailability = vehicleAvailability;
